@@ -6,6 +6,7 @@ use app\models\image\ImageUpload;
 use Yii;
 use app\models\Category;
 use yii\helpers\ArrayHelper;
+use yii\data\Pagination;
 
 /**
  * This is the model class for table "article".
@@ -99,6 +100,14 @@ class Article extends \yii\db\ActiveRecord
     }
 
 
+    public function getCategoryTitle()
+    {
+        if ($this->category){
+            return $this->category->title;
+        }
+    }
+
+
     public function getTags()
     {
         return $this->hasMany(Tag::className(),['id' => 'tag_id'])
@@ -127,5 +136,40 @@ class Article extends \yii\db\ActiveRecord
     public function clearCurrentTags()
     {
         ArticleTag::deleteAll(['article_id' => $this->id]);
+    }
+
+
+    public function getDate()
+    {
+        return Yii::$app->formatter->asDate($this->date);
+    }
+
+
+
+    public static function getArticleWithPagination($articleLimit = 4)
+    {
+        $query = Article::find();
+        $countQuery = $query->count();
+
+        $pagination = new Pagination(['totalCount' => $countQuery, 'pageSize' => $articleLimit]);
+        $articles = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        $data['articles'] = $articles;
+        $data['pagination'] = $pagination;
+
+        return $data;
+    }
+
+    public static function getPopolarArticle()
+    {
+        return Article::find()->orderBy('viewed desc')->limit(3)->all();
+    }
+
+
+    public static function getRecentArticle()
+    {
+        return Article::find()->orderBy('date desc')->limit(4)->all();
     }
 }
