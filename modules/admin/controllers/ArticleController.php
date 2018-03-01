@@ -137,7 +137,7 @@ class ArticleController extends Controller
         $categories = ArrayHelper::map($categories, 'id', 'title');
 
         $tags = ArrayHelper::map(Tag::find()->all(),'id', 'title');
-        $selectedTags = $model->getSelectedTags();
+        $selectedTags = $model->getSelectedTagsIds();
 
         if ($model->load(Yii::$app->request->post())) {
 
@@ -195,7 +195,7 @@ class ArticleController extends Controller
     {
         $article = $this->findModel($id);
 
-        $selectedTags = $article->getSelectedTags();
+        $selectedTags = $article->getSelectedTagsIds();
 
         $tags = ArrayHelper::map(Tag::find()->all(),'id', 'title');
 

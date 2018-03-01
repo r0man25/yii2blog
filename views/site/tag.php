@@ -48,14 +48,14 @@ use yii\widgets\LinkPager;
                 </ul>
             </div>
             <?=
-                $this->render('/partials/sidebar',[
-                    'popular' => $popular,
-                    'recent' => $recent,
-                    'categories' => $categories,
-                    'tags' => $tags,
-                    'requestId' => $requestId,
-                    'requestAction' => $requestAction,
-                ]);
+            $this->render('/partials/sidebar',[
+                'popular' => $popular,
+                'recent' => $recent,
+                'categories' => $categories,
+                'tags' => $tags,
+                'requestId' => $requestId,
+                'requestAction' => $requestAction,
+            ]);
             ?>
         </div>
     </div>

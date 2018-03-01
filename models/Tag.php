@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\data\Pagination;
 
 /**
  * This is the model class for table "tag".
@@ -50,5 +51,34 @@ class Tag extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Article::className(),['id' => 'article_id'])
             ->viaTable('article_tag', ['tag_id' => 'id']);
+    }
+
+    public static function getArticlesByTagWithPagination($id, $articleLimit = 3)
+    {
+        $query = Tag::findOne($id)->getArticles();
+        $countQuery = $query->count();
+
+        $pagination = new Pagination(['totalCount' => $countQuery, 'pageSize' => $articleLimit]);
+        $articles = $query->offset($pagination->offset)
+            ->orderBy('id desc')
+            ->limit($pagination->limit)
+            ->all();
+
+        $data['articles'] = $articles;
+        $data['pagination'] = $pagination;
+
+        return $data;
+    }
+
+
+    public static function getAllTags()
+    {
+        return Tag::find()->all();
+    }
+
+
+    public function getArticleCountByTag()
+    {
+        return $this->getArticles()->count();
     }
 }

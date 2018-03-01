@@ -114,11 +114,23 @@ class Article extends \yii\db\ActiveRecord
             ->viaTable('article_tag', ['article_id' => 'id']);
     }
 
-    public function getSelectedTags()
+    public function getSelectedTagsIds()
     {
         $selectedIds = $this->getTags()->select('id')->asArray()->all();
         return ArrayHelper::getColumn($selectedIds, 'id');
     }
+
+
+    public function getSelectedTags()
+    {
+        return $selectedTitle = $this->getTags()->all();
+    }
+
+    public static function getArticlesByCategory($id)
+    {
+        return $query = Article::find()->where(['category_id' => $id])->all();
+    }
+
 
     public function saveTags($tags)
     {
@@ -153,6 +165,7 @@ class Article extends \yii\db\ActiveRecord
 
         $pagination = new Pagination(['totalCount' => $countQuery, 'pageSize' => $articleLimit]);
         $articles = $query->offset($pagination->offset)
+            ->orderBy('id desc')
             ->limit($pagination->limit)
             ->all();
 
@@ -171,5 +184,15 @@ class Article extends \yii\db\ActiveRecord
     public static function getRecentArticle()
     {
         return Article::find()->orderBy('date desc')->limit(4)->all();
+    }
+
+    public static function getPreviousArticle($id)
+    {
+        return Article::find()->where("id < $id")->orderBy('id desc')->one();
+    }
+
+    public static function getNextArticle($id)
+    {
+        return Article::find()->where("id > $id")->one();
     }
 }

@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Article;
+use app\models\Tag;
 
 class SiteController extends Controller
 {
@@ -70,6 +71,7 @@ class SiteController extends Controller
         $recent = Article::getRecentArticle();
 
         $categories = Category::getAllCategories();
+        $tags = Tag::getAllTags();
 
 
         return $this->render('index', [
@@ -78,6 +80,7 @@ class SiteController extends Controller
             'popular' => $popular,
             'recent' => $recent,
             'categories' => $categories,
+            'tags' => $tags,
         ]);
     }
 
@@ -146,14 +149,83 @@ class SiteController extends Controller
 
 
 
-    public function actionView()
+    public function actionView($id)
     {
-        return $this->render('single');
+        $article = Article::findOne($id);
+
+        $prevArticle = Article::getPreviousArticle($id);
+        $nextArticle = Article::getNextArticle($id);
+
+        $categoryArticles = Article::getArticlesByCategory($article->category_id);
+
+        $popular = Article::getPopolarArticle();
+        $recent = Article::getRecentArticle();
+        $categories = Category::getAllCategories();
+        
+        $selectedTags = $article->getSelectedTags();
+
+        $tags = Tag::getAllTags();
+
+
+        return $this->render('single',[
+            'article' => $article,
+            'prevArticle' => $prevArticle,
+            'nextArticle' => $nextArticle,
+            'categoryArticles' => $categoryArticles,
+            'popular' => $popular,
+            'recent' => $recent,
+            'categories' => $categories,
+            'selectedTags' => $selectedTags,
+            'tags' => $tags,
+        ]);
     }
 
 
-    public function actionCategory()
+    public function actionCategory($id)
     {
-        return $this->render('category');
+        $articlesWithPagination = Category::getArticlesByCategoryWithPagination($id);
+        $popular = Article::getPopolarArticle();
+        $recent = Article::getRecentArticle();
+        $categories = Category::getAllCategories();
+        $tags = Tag::getAllTags();
+
+        $requestId = Yii::$app->request->get('id');
+        $requestAction = Yii::$app->controller->action->id;
+
+        return $this->render('category', [
+            'articles' => $articlesWithPagination['articles'],
+            'pagination' => $articlesWithPagination['pagination'],
+            'popular' => $popular,
+            'recent' => $recent,
+            'categories' => $categories,
+            'tags' => $tags,
+            'requestId' => $requestId,
+            'requestAction' => $requestAction,
+        ]);
+    }
+
+    public function actionTag($id)
+    {
+
+        $articlesWithPagination = Tag::getArticlesByTagWithPagination($id);
+
+        $popular = Article::getPopolarArticle();
+        $recent = Article::getRecentArticle();
+        $categories = Category::getAllCategories();
+        $tags = Tag::getAllTags();
+
+        $requestId = Yii::$app->request->get('id');
+        $requestAction = Yii::$app->controller->action->id;
+
+        return $this->render('tag', [
+            'articles' => $articlesWithPagination['articles'],
+            'pagination' => $articlesWithPagination['pagination'],
+            'popular' => $popular,
+            'recent' => $recent,
+            'categories' => $categories,
+            'tags' => $tags,
+            'requestId' => $requestId,
+            'requestAction' => $requestAction,
+        ]);
     }
 }
