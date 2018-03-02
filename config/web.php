@@ -52,18 +52,6 @@ $config = [
             ],
         ],
 
-        'assetManager' => [
-            'bundles' => [
-                'yii\web\JqueryAsset' => [
-                    'basePath' => '@webroot',
-                    'baseUrl' => '@web',
-                    'js' => [
-                        'public/js/jquery-3.2.1.min.js',
-                    ]
-                ]
-            ]
-        ],
-
     ],
     'modules' => [
         'admin' => [
