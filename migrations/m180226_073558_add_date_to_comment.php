@@ -20,9 +20,7 @@ class m180226_073558_add_date_to_comment extends Migration
      */
     public function down()
     {
-        echo "m180226_073558_add_date_to_comment cannot be reverted.\n";
-
-        return false;
+        $this->dropColumn('comment', 'date');
     }
 
     /*

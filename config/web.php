@@ -22,6 +22,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+//            'loginUrl' => ['user/login'], //TODO: login user redirect
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -49,6 +50,18 @@ $config = [
             'showScriptName' => false,
             'rules' => [
             ],
+        ],
+
+        'assetManager' => [
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'basePath' => '@webroot',
+                    'baseUrl' => '@web',
+                    'js' => [
+                        'public/js/jquery-3.2.1.min.js',
+                    ]
+                ]
+            ]
         ],
 
     ],

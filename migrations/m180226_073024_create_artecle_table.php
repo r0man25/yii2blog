@@ -31,6 +31,6 @@ class m180226_073024_create_artecle_table extends Migration
      */
     public function down()
     {
-        $this->dropTable('artecle');
+        $this->dropTable('article');
     }
 }

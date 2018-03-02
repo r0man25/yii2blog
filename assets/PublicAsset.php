@@ -29,6 +29,7 @@ class PublicAsset extends AssetBundle
         "public/css/style.css",
         "public/css/responsive.css",
     ];
+
     public $js = [
         "public/js/jquery-1.11.3.min.js",
         "public/js/bootstrap.min.js",
@@ -37,6 +38,9 @@ class PublicAsset extends AssetBundle
         "public/js/menu.js",
         "public/js/scripts.js",
     ];
+
     public $depends = [
+//        'yii\web\YiiAsset',
+        //'yii\bootstrap\BootstrapAsset',
     ];
 }
