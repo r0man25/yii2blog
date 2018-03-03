@@ -63,6 +63,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => 'col-md-1'
                 ]
             ],
+
+            [
+                'format' => 'html',
+                'label' => 'User',
+                'value' => function($data){
+                    return $data->getUsername();
+                }
+            ],
         ],
     ]); ?>
 </div>

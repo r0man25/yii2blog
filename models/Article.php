@@ -108,6 +108,19 @@ class Article extends \yii\db\ActiveRecord
     }
 
 
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public function getUsername()
+    {
+        if ($this->user){
+            return 'ID: ' . $this->user->id . '; User name: ' . $this->user->username;
+        }
+    }
+
+
     public function getTags()
     {
         return $this->hasMany(Tag::className(),['id' => 'tag_id'])

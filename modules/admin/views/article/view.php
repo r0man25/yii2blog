@@ -30,10 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <!--   +++++++++++++++++++++       Insert IMAGE    +++++++++++++++++++++         -->
         <!--         Html::a('Add image', ['set-image', 'id' => $model->id], ['class' => 'btn btn-default']) -->
         <div class="btn btn-info">
-        <?php $form = ActiveForm::begin(['action' => ['set-image','id' => $model->id]]); ?>
-            <?= $form->field($imageUploadModel, 'image')->fileInput(['maxlength' => true]) ?>
-            <?= Html::submitButton('Add', ['class' => 'btn btn-success']) ?>
-        <?php ActiveForm::end(); ?>
+            <?php $form = ActiveForm::begin(['action' => ['set-image','id' => $model->id]]); ?>
+                <?= $form->field($imageUploadModel, 'image')->fileInput(['maxlength' => true]) ?>
+                <?= Html::submitButton('Add', ['class' => 'btn btn-success']) ?>
+            <?php ActiveForm::end(); ?>
         </div>
 <!--   +++++++++++++++++++++       Insert IMAGE    +++++++++++++++++++++         -->
 
@@ -71,6 +71,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Image',
                 'value' => function($data){
                     return Html::tag('p',$data->image) . Html::img($data->getImage(), ['width' => 200]);
+                }
+            ],
+            [
+                'format' => 'html',
+                'label' => 'User',
+                'value' => function($data){
+                    return $data->getUsername();
                 }
             ],
         ],

@@ -104,6 +104,7 @@ class ArticleController extends Controller
 
             $file = UploadedFile::getInstance($imageModelUpload, 'image');
             $model->image =  $imageModelUpload->uploadFile($file);
+            $model->user_id = Yii::$app->user->identity->id;
 
             if ($model->save()){
                 $tags = Yii::$app->request->post('tags');
@@ -143,6 +144,7 @@ class ArticleController extends Controller
 
             $file = UploadedFile::getInstance($imageModelUpload, 'image');
             $model->image = $imageModelUpload->uploadFile($file, $model->image);
+            $model->user_id = Yii::$app->user->identity->id;
 
             if ($model->save()){
                 $tags = Yii::$app->request->post('tags');
