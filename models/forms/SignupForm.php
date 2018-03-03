@@ -21,18 +21,27 @@ class SignupForm extends Model
     public function rules()
     {
         return [
-            [['username', 'email', 'password'], 'required'],
+
+            [['username'], 'trim'],
+            [['username'], 'required'],
+            [['username'], 'string', 'min' => 2, 'max' => 255],
             [['username'], 'unique', 'targetClass' => User::className()],
-            [['email'], 'unique', 'targetClass' => User::className()],
-            [['username'], 'string', 'min' => 3],
+
+            [['email'], 'trim'],
+            [['email'], 'required'],
             [['email'], 'email'],
+            [['email'], 'string', 'max' => 255],
+            [['email'], 'unique', 'targetClass' => User::className()],
+
+            [['password'], 'required'],
             [['password'], 'string', 'min' => 6],
+
         ];
     }
 
-    public function login()
+    public function createUser()
     {
-        if ($this->validate()){
+        if ($this->validate()) {
             $user = new User();
 
             $user->username = $this->username;
@@ -41,12 +50,11 @@ class SignupForm extends Model
             $user->password_hash = Yii::$app->security->generatePasswordHash($this->password);
             $user->created_at = $time = time();
             $user->updated_at = time();
-        }
 
-        if ($user->save()){
-            return $user;
+            if ($user->save()) {
+                return $user;
+            }
         }
-
     }
 
 }

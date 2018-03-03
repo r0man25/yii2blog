@@ -45,14 +45,25 @@ PublicAsset::register($this);
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                 <ul class="nav navbar-nav text-uppercase">
-                    <li><a data-toggle="dropdown" class="dropdown-toggle" href="/">Home</a>
-
-                    </li>
+                    <li><a href="/">Home</a></li>
                 </ul>
                 <div class="i_con">
                     <ul class="nav navbar-nav text-uppercase">
-                        <li><a href="/user/login">Login</a></li>
-                        <li><a href="/user/signup">Register</a></li>
+                        <?php if (Yii::$app->user->isGuest): ?>
+                            <li><a href="/user/login">Login</a></li>
+                            <li><a href="/user/signup">Register</a></li>
+                        <?php else: ?>
+                            <?=
+                                '<li><a>'
+                                    . Html::beginForm(['/user/logout'], 'post')
+                                    . Html::submitButton(
+                                    'Logout (' . Yii::$app->user->identity->username . ')',
+                                            ['class' => 'btn btn-link logout']
+                                    )
+                                    . Html::endForm()
+                                .'</a></li>'
+                            ?>
+                        <?php endif; ?>
                     </ul>
                 </div>
 
@@ -63,10 +74,9 @@ PublicAsset::register($this);
     <!-- /.container-fluid -->
 </nav>
 
-
-<?= $content ?>
-
-
+<div class="container">
+    <?= $content ?>
+</div>
 
 <footer class="footer-widget-section">
     <div class="container">

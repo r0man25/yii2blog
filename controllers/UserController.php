@@ -13,15 +13,19 @@ use yii\web\Controller;
 use app\models\forms\LoginForm;
 use Yii;
 
-
 class UserController extends Controller
 {
 
     public function actionSignup()
     {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
         $model = new SignupForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->login()){
+        if ($model->load(Yii::$app->request->post()) && $user = $model->createUser()){
+            Yii::$app->user->login($user);
             Yii::$app->session->setFlash('success', 'Register success!');
             return $this->redirect(['site/index']);
         }
@@ -45,10 +49,10 @@ class UserController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            Yii::$app->session->setFlash('info', "Hello $model->username!");
+            return $this->redirect(['site/index']);
         }
 
-        $model->password = '';
         return $this->render('login', [
             'model' => $model,
         ]);
@@ -62,7 +66,9 @@ class UserController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
+
+
+
 }
