@@ -120,6 +120,14 @@ class Article extends \yii\db\ActiveRecord
         }
     }
 
+    public function getUsernameForSite()
+    {
+        if ($this->user){
+            return $this->user->username;
+        }
+        return "No-name";
+    }
+
 
     public function getTags()
     {
@@ -208,4 +216,22 @@ class Article extends \yii\db\ActiveRecord
     {
         return Article::find()->where("id > $id")->one();
     }
+
+    public function getComments()
+    {
+        return $this->hasMany(Comment::className(),['article_id' => 'id']);
+    }
+
+    public function getArticleComments()
+    {
+        return $this->getComments()->where(['status' => 1])->orderBy('id desc')->all();
+    }
+
+
+    public function viewedCounter()
+    {
+        $this->viewed++;
+        return $this->save(false);
+    }
+
 }

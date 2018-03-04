@@ -53,7 +53,6 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
 
-
     public static function findIdentity($id)
     {
         return static::findOne($id);

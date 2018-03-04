@@ -1,9 +1,11 @@
 <?php
 use yii\helpers\Url;
+use app\widgets\Alert;
 ?>
 
 <!--main content start-->
 <div class="main-content">
+    <?= Alert::widget() ?>
     <div class="row">
         <div class="col-md-8">
             <article class="post">
@@ -23,7 +25,6 @@ use yii\helpers\Url;
                         <p><?= $article->content ?></p>
 
                     </div>
-                    <!--++++++++++++++++++++++++++++++++++++++   TAGS   ++++++++++++++++++++++++++++++++++++++-->
                     <div class="decoration">
                         <?php foreach ($selectedTags as $tag): ?>
                             <a href="<?= Url::to(['site/tag', 'id' => $tag->id]) ?>" class="btn btn-default"><?= $tag->title ?></a>
@@ -32,15 +33,6 @@ use yii\helpers\Url;
 
                 </div>
             </article>
-            <!--top comment-->
-            <!--                <div class="top-comment">-->
-            <!--                    <img src="/public/images/comment.jpg" class="pull-left img-circle" alt="">-->
-            <!--                    <h4>Rubel Miah</h4>-->
-            <!---->
-            <!--                    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy hello ro mod tempor-->
-            <!--                        invidunt ut labore et dolore magna aliquyam erat.</p>-->
-            <!--                </div>-->
-            <!--top comment end-->
             <div class="row"><!--blog next previous-->
                 <?php if ($prevArticle): ?>
                     <div class="col-md-6">
@@ -99,56 +91,23 @@ use yii\helpers\Url;
 
                 </div>
             </div><!--related post carousel-->
-            <div class="bottom-comment"><!--bottom comment-->
-                <h4>3 comments</h4>
-
-                <div class="comment-img">
-                    <img class="img-circle" src="/public/images/comment-img.jpg" alt="">
-                </div>
-
-                <div class="comment-text">
-                    <a href="#" class="replay btn pull-right"> Replay</a>
-                    <h5>Rubel Miah</h5>
-
-                    <p class="comment-date">
-                        December, 02, 2015 at 5:57 PM
-                    </p>
 
 
-                    <p class="para">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                        diam nonumy
-                        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-                        voluptua. At vero eos et cusam et justo duo dolores et ea rebum.</p>
-                </div>
-            </div>
-            <!-- end bottom comment-->
 
+            <?= $this->render('/partials/comment', [
+                    'article' => $article,
+                    'comments' => $comments,
+                    'commentForm' => $commentForm,
+            ]) ?>
 
-            <div class="leave-comment"><!--leave comment-->
-                <h4>Leave a reply</h4>
-
-
-                <form class="form-horizontal contact-form" role="form" method="post" action="#">
-
-                    <div class="form-group">
-                        <div class="col-md-12">
-										<textarea class="form-control" rows="6" name="message"
-                                                  placeholder="Write Massage"></textarea>
-                        </div>
-                    </div>
-                    <a href="#" class="btn send-btn">Post Comment</a>
-                </form>
-            </div><!--end leave comment-->
         </div>
 
-            <?=
-                $this->render('/partials/sidebar',[
+            <?= $this->render('/partials/sidebar',[
                     'popular' => $popular,
                     'recent' => $recent,
                     'categories' => $categories,
                     'tags' => $tags,
-                ]);
-            ?>
+                ]);?>
          </div>
 </div>
 <!-- end main content-->

@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\Category;
+use app\models\Comment;
+use app\models\forms\CommentForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -133,6 +135,10 @@ class SiteController extends Controller
 
         $tags = Tag::getAllTags();
 
+        $comments = $article->getArticleComments();
+        $commentForm = new CommentForm();
+
+        $article->viewedCounter();
 
         return $this->render('single',[
             'article' => $article,
@@ -144,8 +150,21 @@ class SiteController extends Controller
             'categories' => $categories,
             'selectedTags' => $selectedTags,
             'tags' => $tags,
+            'comments' => $comments,
+            'commentForm' => $commentForm,
         ]);
     }
+
+
+    public function actionComment($id)
+    {
+        $model = new CommentForm();
+        if ($model->load(Yii::$app->request->post()) && $model->saveComment($id)){
+            Yii::$app->session->setFlash('success', 'Your comment will be added soon.');
+            return $this->redirect(['site/view', 'id' => $id]);
+        }
+    }
+
 
 
     public function actionCategory($id)
