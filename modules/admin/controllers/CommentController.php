@@ -22,9 +22,7 @@ class CommentController extends Controller
 
             $id = Yii::$app->request->get('id');
             $action = Yii::$app->request->post('action') . "Comment";
-            echo "<pre>";
-            print_r($id);
-            echo "<pre>";die;
+
             $comment = Comment::findOne($id);
 
             if ($comment->$action()){
@@ -37,7 +35,7 @@ class CommentController extends Controller
         ]);
     }
 
-
+/*
     public function actionDelete($id)
     {
         $comment = Comment::findOne($id);
@@ -63,4 +61,5 @@ class CommentController extends Controller
             return $this->redirect(['comment/index']);
         }
     }
+*/
 }

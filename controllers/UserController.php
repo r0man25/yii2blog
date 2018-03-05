@@ -25,9 +25,9 @@ class UserController extends Controller
         $model = new SignupForm();
 
         if ($model->load(Yii::$app->request->post()) && $user = $model->createUser()){
-            Yii::$app->user->login($user);
-            Yii::$app->session->setFlash('success', 'Register success!');
-            return $this->redirect(['site/index']);
+                Yii::$app->user->login($user);
+                Yii::$app->session->setFlash('success', 'Register success!');
+                return $this->redirect(['site/index']);
         }
 
         return $this->render('signup', [

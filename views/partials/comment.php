@@ -2,7 +2,7 @@
 
     <div class="bottom-comment"><!--bottom comment-->
         <div class="comment-img">
-            <img class="img-circle" src="/public/images/comment-img.jpg" alt=""> <!--TODO: Add user photo uploud-->
+            <img width="50" class="img-circle" src="<?= $comment->getPhoto() ?>" alt=""> <!--TODO: Add user photo uploud-->
         </div>
 
         <div class="comment-text">

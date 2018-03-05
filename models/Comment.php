@@ -75,6 +75,11 @@ class Comment extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
+    public function getPhoto()
+    {
+        return ($this->user->photo) ? '/uploads/' . $this->user->photo : '/no-image.png';
+    }
+
     public function getDate()
     {
         return Yii::$app->formatter->asDate($this->date);
@@ -85,13 +90,13 @@ class Comment extends \yii\db\ActiveRecord
         return $this->status;
     }
 
-    public function allow()
+    public function allowComment()
     {
         $this->status = self::STATUS_ALL0W;
         return $this->save(false);
     }
 
-    public function disallow()
+    public function disallowComment()
     {
         $this->status = self::STATUS_DISALL0W;
         return $this->save(false);

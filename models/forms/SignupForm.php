@@ -8,6 +8,8 @@
 
 namespace app\models\forms;
 
+use app\models\image\ImageUpload;
+use yii\web\UploadedFile;
 use app\models\User;
 use yii\base\Model;
 use Yii;
@@ -17,6 +19,12 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
+    public $photo;
+
+    public function __construct()
+    {
+        $this->photo = new ImageUpload();
+    }
 
     public function rules()
     {
@@ -41,6 +49,8 @@ class SignupForm extends Model
 
     public function createUser()
     {
+        $file = UploadedFile::getInstance($this->photo, 'image');
+
         if ($this->validate()) {
             $user = new User();
 
@@ -50,6 +60,8 @@ class SignupForm extends Model
             $user->password_hash = Yii::$app->security->generatePasswordHash($this->password);
             $user->created_at = $time = time();
             $user->updated_at = time();
+            $user->photo = $this->photo->uploadFile($file);
+
 
             if ($user->save()) {
                 return $user;
