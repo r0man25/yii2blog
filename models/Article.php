@@ -75,7 +75,6 @@ class Article extends \yii\db\ActiveRecord
         return ($this->image) ? '/uploads/' . $this->image : '/no-image.png';
     }
 
-
     public function saveImage($filename)
     {
         $this->image = $filename;
@@ -133,6 +132,15 @@ class Article extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Tag::className(),['id' => 'tag_id'])
             ->viaTable('article_tag', ['article_id' => 'id']);
+    }
+
+    public function getSelectedTagsTitle()
+    {
+        if ($this->tags){
+            $arrTags = ArrayHelper::getColumn($this->tags, 'title');
+            $strTags = implode('; ', $arrTags);
+            return $strTags;
+        }
     }
 
     public function getSelectedTagsIds()
@@ -232,6 +240,12 @@ class Article extends \yii\db\ActiveRecord
     {
         $this->viewed++;
         return $this->save(false);
+    }
+
+
+    public static function getArticlesByUser($id)
+    {
+        return Article::find()->where(['user_id' => $id])->orderBy('id desc')->all();
     }
 
 }

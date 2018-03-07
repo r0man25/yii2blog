@@ -42,6 +42,21 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         ];
     }
 
+
+    public function getImage()
+    {
+        return ($this->photo) ? '/uploads/' . $this->photo : '/no-image.png';
+    }
+
+    public function getDate($date){
+        return date('Y-m-d', $date);
+    }
+
+    public function getUserAdminStatus()
+    {
+        return ($this->isAdmin)?'Yes':'No';
+    }
+
     public function findUserByUsername($username)
     {
         return self::find()->where(['username' => $username])->one();
@@ -92,6 +107,17 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function validateAuthKey($authKey)
     {
         return $this->getAuthKey() === $authKey;
+    }
+
+
+    public function getRole()
+    {
+        return $this->hasOne(AuthAssignment::className(), ['user_id' => 'id']);
+    }
+
+    public function getRoleTitle()
+    {
+        return $this->role->item_name;
     }
 
 }

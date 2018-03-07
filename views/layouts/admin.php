@@ -43,6 +43,7 @@ AppAsset::register($this);
             ['label' => 'Category', 'url' => ['/admin/category/index']],
             ['label' => 'Tag', 'url' => ['/admin/tag/index']],
             ['label' => 'Commentaries', 'url' => ['/admin/comment/index']],
+            ['label' => 'Users', 'url' => ['/admin/user/index']],
 
         ],
     ]);

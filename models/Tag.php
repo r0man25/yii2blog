@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\data\Pagination;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "tag".
@@ -80,5 +81,10 @@ class Tag extends \yii\db\ActiveRecord
     public function getArticleCountByTag()
     {
         return $this->getArticles()->count();
+    }
+
+    public static function getTagsAsArray()
+    {
+        return ArrayHelper::map(Tag::find()->all(),'id', 'title');
     }
 }

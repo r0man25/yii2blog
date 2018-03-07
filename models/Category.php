@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\data\Pagination;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "category".
@@ -73,6 +74,12 @@ class Category extends \yii\db\ActiveRecord
         $data['pagination'] = $pagination;
 
         return $data;
+    }
+
+    public static function getCategoriesAsArray()
+    {
+        $categories = Category::find()->asArray()->all();
+        return $categories = ArrayHelper::map($categories, 'id', 'title');
     }
 
 

@@ -12,14 +12,15 @@ use app\models\image\ImageUpload;
 use yii\web\UploadedFile;
 use app\models\User;
 use yii\base\Model;
-use Yii;
 
-class SignupForm extends Model
+class UpdateUserForm extends Model
 {
     public $username;
     public $email;
-    public $password;
+    public $isAdmin;
     public $photo;
+    public $_username;
+    public $_email;
 
     public function __construct()
     {
@@ -41,36 +42,50 @@ class SignupForm extends Model
             [['email'], 'string', 'max' => 255],
             [['email'], 'unique', 'targetClass' => User::className()],
 
-            [['password'], 'required'],
-            [['password'], 'string', 'min' => 6],
+            [['isAdmin'], 'integer'],
+            [['isAdmin'], 'in', 'range' => [0,1]],
 
         ];
     }
 
-    public function createUser()
+    public function getUserById($id)
+    {
+        $user = User::findOne($id);
+
+        $this->username = $user->username;
+        $this->email = $user->email;
+        $this->isAdmin = $user->isAdmin;
+        $this->_username = $user->username;
+        $this->_email = $user->email;
+    }
+
+
+    public function updateUser($id)
     {
         $file = UploadedFile::getInstance($this->photo, 'image');
 
-        if ($this->validate()) {
-            $user = new User();
+        $user = User::findOne($id);
 
+        $user->email = '';
+        $user->username = '';
+        $user->update();
+
+        if ($this->validate()) {
             $user->username = $this->username;
             $user->email = $this->email;
-            $user->auth_key = Yii::$app->security->generateRandomString();
-            $user->password_hash = Yii::$app->security->generatePasswordHash($this->password);
-            $user->created_at = $time = time();
             $user->updated_at = time();
-            $user->photo = $this->photo->uploadFile($file);
-
+            if($file) {
+                $user->photo = $this->photo->uploadFile($file);
+            }
+            $user->isAdmin = $this->isAdmin;
 
             if ($user->save()) {
-                $auth = Yii::$app->authManager;
-                $authorRole = $auth->getRole('author');
-                $auth->assign($authorRole, $user->id);
-
-                return $user;
+                return true;
             }
         }
-    }
 
+        $user->email = $this->_email;
+        $user->username = $this->_username;
+        $user->update();
+    }
 }
